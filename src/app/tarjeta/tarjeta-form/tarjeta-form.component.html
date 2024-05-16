@@ -1,0 +1,77 @@
+<form [formGroup]="tarjetaForm" (ngSubmit)="isCreate ? crearTarjeta(): actualizarTarjeta()"  novalidate >
+    <input type="hidden" formControlName="id"/>
+    <input type="hidden" formControlName="idUsuario"/>
+      
+    <mat-card class="shipping-card"> 
+    <mat-card-header>
+        <mat-card-title class="title">{{titleForm}} Metodo de pago</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row">
+            <div class="col">
+                <mat-form-field class="full-width">
+                <input matInput placeholder="Proveedor" formControlName="proveedor">
+                <mat-error *ngIf="errorHandling('proveedor','required')">
+                    Proveedor exacta es <strong>requerido</strong>
+                </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <mat-form-field class="full-width">
+                <input matInput #nombree placeholder="Nombre" maxlength="50" formControlName="nombre">
+                <mat-hint align="end">{{nombree.value.length}} / 50</mat-hint>
+                <mat-error *ngIf="errorHandling('nombre','required')">
+                    Nombre exacta es <strong>requerido</strong>
+                </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <mat-form-field class="full-width">
+                <input matInput placeholder="Número" formControlName="numero">
+                <mat-error *ngIf="errorHandling('numero','required')">
+                    Número es <strong>requerido</strong>
+                </mat-error>
+                <mat-error *ngIf="errorHandling('numero','pattern')">
+                    Número debe tener <strong>16 dígitos</strong>
+                </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <mat-form-field class="full-width">
+                <input matInput type="date" [(ngModel)]="selectedDate" placeholder="Fecha de expiración" formControlName="fechaExp">
+                <mat-error *ngIf="errorHandling('fechaExp','required')">
+                    Fecha de expiración es <strong>requerido</strong>
+                </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Tipo" formControlName="tipo">
+                        <mat-option *ngFor="let tipos of tiposEnumValues" [value]="tipos">
+                        {{ tipos }}
+                        </mat-option>
+                    </mat-select>
+                <mat-error *ngIf="errorHandling('tipo','required')">
+                    Tipo es <strong>requerida</strong>
+                </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button class="guardar" mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-card-actions>
+    </mat-card>
+</form>

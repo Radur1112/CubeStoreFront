@@ -1,0 +1,75 @@
+<mat-card class="box">
+    <mat-card-title><h3>Mi Carrito de Compras</h3></mat-card-title>
+    <mat-card-content *ngIf="currentUser as currentUser">
+      Fecha: {{fecha | date: 'dd/MM/yyyy'}}
+      <br>
+      Usuario: {{currentUser.user.nombre}}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="box">
+    <mat-card-content *ngIf="dataSource">
+      <mat-table  [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="producto">
+          <mat-header-cell *matHeaderCellDef> Producto </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.producto.nombre}} 
+          </mat-cell>
+          
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="precio">
+          <mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.precio | currency}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="cantidad">
+          <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
+          <mat-cell *matCellDef="let element"> 
+            <mat-form-field appearance="fill">
+                <input matInput id="cantidad " type="number" class="form-control mb-2" 
+                [(ngModel)]="element.cantidad"
+                (change)="actualizarCantidad(element)"
+                > 
+            </mat-form-field> 
+          </mat-cell>
+          <mat-footer-cell *matFooterCellDef class="footer-total">
+            Subtotal 
+            <br>
+            Total
+          </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subtotal">
+          <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.subtotal | currency }} </mat-cell>
+          <mat-footer-cell *matFooterCellDef class="footer-total">
+            {{subtotal | currency}}
+            <br>
+            {{total | currency}} (Incluye 13% de IVA)
+          </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef> Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let element"> 
+            <button mat-icon-button (click)="eliminarItem(element)">
+            <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns" class="header"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns" class="footer-row"></mat-footer-row>
+      </mat-table>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-flat-button color="accent" (click)="checkout()" >
+          Checkout
+          <mat-icon>money</mat-icon> 
+          </button>
+    </mat-card-actions>
+  </mat-card>

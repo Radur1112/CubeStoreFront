@@ -1,0 +1,26 @@
+td {
+    width: 300px;
+    height: 80px;
+}
+
+.hoverin:hover {
+  background: linear-gradient(to bottom, #00c2ff, #007eff);
+}
+
+.disable {
+    background-color: #8c8c8c;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.botones {
+    margin: 5px;
+}
+
+.hola {
+    width: 4000px;
+}
+  

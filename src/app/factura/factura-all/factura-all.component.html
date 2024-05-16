@@ -1,0 +1,99 @@
+<mat-card class="full-width">
+    <!-- Titulo del Card -->
+
+    <button
+    *ngIf="isVendedor && isCliente"
+    mat-button
+    matTooltip="Detalle Factura"
+    aria-label="Detalle Factura"
+    color="primary"
+    (click)="!selected ? listaFacturasVendedor(idUsuario) : listaFacturasCliente(idUsuario)"
+    >
+      <mat-icon class="mat-18">info</mat-icon> {{selected ? 'Vista Vendedor' : 'Vista Cliente'}}
+    </button>
+    
+    <mat-card-content>
+      <!-- Table -->
+      <div class="mat-elevation-z8" *ngIf="dataSource">
+        <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
+  
+          <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef>{{selected ? "Nombre comprador" : "Direccion"}}</th>
+            <td mat-cell *matCellDef="let row">{{selected ? row.usuario.nombre : row.direccion.direccionExacta}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let row">{{row.createdAt | date: "short"}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let row">{{row.total | currency}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+            <td mat-cell *matCellDef="let row" [ngStyle]="{'color': row.estado=='PENDIENTE' ? 'red': row.estado=='EN_PROGRESO' ? '#FFD200' : 'green'}">{{enums[row.estado]}}</td>
+          </ng-container>
+          
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let row"  class="container">
+              <button
+              mat-mini-fab
+              color="accent"
+              matTooltip="Detalle Factura"
+              aria-label="Detalle Factura"
+              color="primary"
+              class="botones"
+              (click)="detalle(row.id)"
+              >
+                <mat-icon class="mat-18">info</mat-icon>
+              </button>
+
+              <button mat-mini-fab *ngIf="selected" color="primary" class="botones" [disabled]="isEvaluated(row)" (click)="openEvaluacion(row)">
+                <mat-icon >star</mat-icon>
+              </button>
+
+              <button mat-raised-button *ngIf="!selected" color="primary" class="botones" [matMenuTriggerFor]="menu" (click)="listaVendedoresFactura(row)">
+                Evaluar
+              </button>
+            </td>
+          </ng-container>
+          
+          <mat-menu #menu="matMenu" class="hola" xPosition="before">
+            <mat-list>
+              <div mat-subheader>Vendedores</div>
+              <a *ngFor="let item of facturaProductos" (click)="isEvaluated(item[0]) ? '' : openEvaluacion(item)">
+                <div [ngClass]="isEvaluated(item[0]) ? 'disable' : 'hoverin'">
+                  <mat-list-item >
+                    <mat-icon matListItemIcon class="star">star</mat-icon>
+                    <div matListItemTitle>{{item[0].producto.usuario.nombre}}</div>
+                    <div matListItemLine *ngFor="let product of item">
+                      {{product.cantidad}}x {{ product.producto.nombre }}
+                    </div>
+                  </mat-list-item>
+                </div>
+              </a>
+            </mat-list>
+          </mat-menu>
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+  
+        <mat-paginator
+          #paginator
+          [length]="dataSource?.data?.length"
+          [pageIndex]="0"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20]"
+          aria-label="Selecccione una página"
+        >
+        </mat-paginator>
+      </div>
+      <!-- Table -->
+    </mat-card-content>
+  </mat-card>
+  

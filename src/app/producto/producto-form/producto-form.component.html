@@ -1,0 +1,116 @@
+<form [formGroup]="productoForm" (ngSubmit)="isCreate ? crearProducto(): actualizarProducto()"  novalidate >
+  <input type="hidden" formControlName="id" />
+  <input type="hidden" formControlName="idUsuario" value="3" />
+    
+  <mat-card class="shipping-card"> 
+    <mat-card-header>
+      <mat-card-title class="title">{{titleForm}} Producto</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput formControlName="nombre" maxlength="50" placeholder="Nombre" >
+            <mat-hint align="end"> / 20</mat-hint>
+            <mat-error *ngIf="errorHandling('nombre','required')">
+              Nombre es <strong>requerido</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('nombre','minlength')">
+              Nombre debe tener <strong>3 caracteres</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Descripción" formControlName="descripcion">
+            <mat-error *ngIf="errorHandling('descripcion','required')">
+              Descripción es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      
+
+      <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Cantidad Disponible" formControlName="cantidad">
+              <mat-error *ngIf="errorHandling('cantidad','required')">
+                Cantidad es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Precio" formControlName="precio">
+              <mat-error *ngIf="errorHandling('precio','required')">
+                Precio es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col" *ngIf="isCreate">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Categoria" formControlName="idCategoria">
+                  <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
+                    {{ categoria.descripcion }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="errorHandling('idCategoria','required')">
+                  Categoria es <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col">
+              <mat-form-field class="full-width">
+                  <mat-select placeholder="Estado" formControlName="estado">
+                      <mat-option *ngFor="let estadoOption of estadoEnumValues" [value]="estadoOption">
+                        {{ estadoOption }}
+                      </mat-option>
+                    </mat-select>
+                <mat-error *ngIf="errorHandling('estado','required')">
+                  Estado es <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+        </div> 
+
+        <div class="row">
+          <div class="col" *ngIf="atributosList">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Atributos" formControlName="atributos"  multiple>
+                <mat-option *ngFor="let g of atributosList" [value]="g.id">
+                    {{g.descripcion}}: {{g.valor}}
+                </mat-option>
+              </mat-select>
+              <mat-error >
+                Atributos es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      
+      
+
+      <div *ngFor="let imageUrl of uploadedImages">
+        <img [src]="imageUrl" alt="Uploaded Image">
+      </div>
+
+      <h2 style="text-align: center">Seleccione imagenes para subir</h2>
+      <div style="text-align: center">
+        <form>      
+          <div>
+            <input type="file" (change)="uploadMultiple($event)" multiple  accept="image/*"/>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button class="guardar" mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+  

@@ -1,0 +1,64 @@
+<mat-card class="full-width">
+    <!-- Titulo del Card -->
+    <mat-card-title class="title">
+      Usuario
+    </mat-card-title>
+    <mat-card-content>
+      <!-- Table -->
+      <div class="mat-elevation-z8" *ngIf="dataSource">
+        <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
+            
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+            <td mat-cell *matCellDef="let row">{{row.nombre}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="correo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
+            <td mat-cell *matCellDef="let row">{{row.correo}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefono</th>
+            <td mat-cell *matCellDef="let row">{{row.telefono}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+            <td mat-cell *matCellDef="let row">{{estadoEnumValues[row.estado]}}</td>
+          </ng-container>
+          
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let row">
+              <button
+              mat-mini-fab
+              color="accent"
+              matTooltip="Deshabilitar Usuario"
+              aria-label="Deshabilitar Usuario"
+              color="primary"
+              (click)="deshabilitar(row)"
+              >
+                <mat-icon class="mat-18">block</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+  
+        <mat-paginator
+          #paginator
+          [length]="dataSource?.data?.length"
+          [pageIndex]="0"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20]" 
+          aria-label="Selecccione una página"
+        >
+        </mat-paginator>
+      </div>
+      <!-- Table -->
+    </mat-card-content>
+  </mat-card>
+  

@@ -1,0 +1,41 @@
+<div class="grid-container">
+    <div><p class="title">Direcciones</p></div>           
+    <mat-grid-list [cols]="3" rowHeight="30em" gutterSize="10px">
+        <mat-grid-tile>
+            <a routerLink="/direccion/create">
+                <mat-card class="dashboard-card">
+                    <mat-card-content class="agregarCont">
+                        <div><mat-icon class="agregarIcon">add</mat-icon></div>
+                        <br>
+                        <div class="agregar">Agregar dirección</div>
+                    </mat-card-content>
+                </mat-card>
+            </a>
+        </mat-grid-tile>
+        <mat-grid-tile *ngFor="let item of datos">
+          <mat-card class="dashboard-card">
+            <mat-card-header>
+              <mat-card-title class="titleCard">{{item.provincia}}</mat-card-title>
+            </mat-card-header>
+            <mat-divider outset></mat-divider>
+            <mat-card-content class="descp">
+              <div>{{item.canton}}, {{item.distrito}}  {{item.codigoPostal}}</div>
+              <div>Número de telfono: {{item.telefono}} </div>
+              <div>{{item.direccionExacta}} </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button
+                mat-mini-fab
+                color="accent"
+                matTooltip="Actualizar"
+                aria-label="Actualizar"
+                color="primary"
+                (click)="update(item.id)"
+              >
+                <mat-icon class="mat-18">edit</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
